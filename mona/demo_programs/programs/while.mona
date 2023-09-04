@@ -1,0 +1,9 @@
+var lst = [1, "Hello", 2+2, "World" + "!"];
+
+var len = lenof(lst);
+var idx = 0;
+while (idx < len) {
+    var tmp = lst[idx];
+    println(idx, " -> ", tmp);
+    idx = idx + 1;
+}

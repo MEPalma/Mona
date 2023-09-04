@@ -1,0 +1,36 @@
+decl get_col(matrix, idx) {
+    if (lenof(matrix) == 0) {
+        ret [];
+    }
+    else if (lenof(matrix[0]) <= idx) {
+        ret [];
+    }
+    ret [matrix[0][idx]] + get_col(matrix[1:], idx);
+}
+
+decl doc_prod(lstx, lsty) {
+    if (lenof(lstx) == 0) {
+        ret 0;
+    }
+    ret (lstx[0] * lsty[0]) + doc_prod(lstx[1:], lsty[1:]);
+}
+
+decl mul_row(row, cols, idx) {
+    if (lenof(cols) == 0) {
+        ret [];
+    }
+    else if (idx >= lenof(cols[0])) {
+        ret [];
+    }
+    ret [doc_prod(row, get_col(cols, idx))] + mul_row(row, cols, idx+1);
+}
+
+decl matrix_mul(ma, mb) {
+    if (lenof(ma) == 0) {
+        ret [];
+    }
+    ret [mul_row(ma[0], mb, 0)] + matrix_mul(ma[1:], mb);
+}
+
+var x = [[199, 504, 597, 815, 774, 194, 555, 240, 324, 314, 503], [108, 521, 588, 113, 824, 907, 515, 675, 738, 644, 344], [327, 296, 284, 520, 123, 557, 790, 552, 445, 860, 566], [6, 863, 565, 638, 121, 757, 326, 301, 731, 672, 496], [850, 643, 248, 24, 801, 332, 956, 415, 789, 52, 165], [286, 576, 106, 795, 157, 279, 586, 860, 63, 186, 86], [290, 404, 304, 645, 607, 172, 827, 305, 444, 699, 322], [9, 253, 446, 307, 899, 113, 131, 884, 985, 297, 539], [554, 122, 8, 574, 225, 253, 447, 91, 555, 794, 786], [635, 132, 109, 735, 29, 681, 264, 488, 207, 622, 374], [872, 751, 958, 287, 146, 777, 305, 370, 540, 152, 46]];
+println(matrix_mul(x, x));

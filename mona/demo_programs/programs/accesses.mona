@@ -1,0 +1,25 @@
+decl print_lst_data(lst) {
+    println(
+        "{\n\tlist=", lst,
+        ",\n\tlenght=", lenof(lst),
+        ",\n}"
+    );
+}
+
+var lst = [1, 2, 3, "Hello"];
+print_lst_data(lst);
+
+lst[0] = copyof(lst);
+print_lst_data(lst);
+
+decl append_world(x) {
+    ret x + "World";
+}
+
+lst[-1] = append_world(lst[-1]);
+print_lst_data(lst);
+
+var hello = "Hello";
+var helloworld = "I Say: \"" + hello;
+helloworld = append_world(helloworld) + "\"";
+println(helloworld);

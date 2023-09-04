@@ -1,0 +1,11 @@
+decl func(greetings, bool) {
+    println(greetings);
+    if (bool) {
+        println("Recursive call");
+        func(greetings, False);
+    } else {
+        println("Done");
+    }
+}
+
+func("A recursive hello", True);

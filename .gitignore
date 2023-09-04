@@ -1,0 +1,10 @@
+.idea/
+*.iml
+antlr/*.tokens
+env.todo
+demo_programs/demo_dump/
+demo_programs/demo_dir/
+*.pickle
+dist/
+mona.egg-info/
+.DS_Store

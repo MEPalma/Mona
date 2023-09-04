@@ -1,0 +1,13 @@
+[project]
+name = "mona"
+version = "0.0.1"
+dependencies = [
+	"antlr4-python3-runtime==4.11.1",
+	"click==8.1.3",
+	"mypy-extensions==0.4.3",
+	"pathspec==0.10.2",
+	"platformdirs==2.5.4",
+	"tomli==2.0.1",
+	"typing_extensions==4.4.0",
+	"deepdiff==6.2.3",
+]

@@ -1,0 +1,14 @@
+decl roundings_of(flt) {
+    println("="*100);
+    println("input= ", flt);
+    println("floor= ", floorintof(flt));
+    println("round= ", roundintof(flt));
+    println("ceil= ", ceilintof(flt));
+}
+
+roundings_of(-1.5);
+roundings_of(-1.54);
+roundings_of(2.0);
+roundings_of(2.54);
+roundings_of(2.55);
+roundings_of(2.56);
