@@ -169,6 +169,29 @@ class IOLogs:
         self._io_out.clear()
 
 
+class IllegalTraceUpdateException(RuntimeError):
+    next_legal_trace: Final[int]
+    target_trace_idx: Final[int]
+    trace_seq_id: Final[int]
+    overwrite_seq_id: Final[int]
+
+    def __init__(
+        self,
+        next_legal_trace: int,
+        target_trace_idx: int,
+        trace_seq_id: int,
+        overwrite_seq_id: int,
+    ):
+        super().__init__(
+            f"IllegalTraceUpdateException: Attempted to update the seq_id for trace index '{target_trace_idx}' "
+            f"from '{trace_seq_id}' to '{overwrite_seq_id}' when the next legal trace index is '{next_legal_trace}'"
+        )
+        self.next_legal_trace = next_legal_trace
+        self.target_trace_idx = target_trace_idx
+        self.trace_seq_id = trace_seq_id
+        self.overwrite_seq_id = overwrite_seq_id
+
+
 class Environment:
     _mem: OrderedDict[int, OrderedDict[str, Any]]
     stack: list[Any]
@@ -197,6 +220,14 @@ class Environment:
 
     @seq_id.setter
     def seq_id(self, seq_id: int) -> None:
+        next_legal_trace = len(self.call_trace) - 1
+        if self.trace_idx != len(self.call_trace) - 1:
+            raise IllegalTraceUpdateException(
+                next_legal_trace=next_legal_trace,
+                target_trace_idx=self.trace_idx,
+                trace_seq_id=self.call_trace[self.trace_idx],
+                overwrite_seq_id=seq_id
+            )
         self.call_trace[self.trace_idx] = seq_id
 
     def _rm_mem_scope(self):
