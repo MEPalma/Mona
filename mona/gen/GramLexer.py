@@ -1,4 +1,3 @@
-# Generated from /Users/mep/IFI/Research/BlockChainExecVerification/execGrammar/antlr/GramLexer.g4 by ANTLR 4.12.0
 from antlr4 import *
 from io import StringIO
 import sys

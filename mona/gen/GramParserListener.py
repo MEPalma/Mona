@@ -1,4 +1,3 @@
-# Generated from /Users/mep/IFI/Research/BlockChainExecVerification/execGrammar/antlr/GramParser.g4 by ANTLR 4.12.0
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .GramParser import GramParser
