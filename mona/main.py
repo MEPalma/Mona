@@ -1,52 +1,43 @@
-from mona.interpreter.environment.environment import Environment
-from mona.interpreter.parsing.parser import Parser
+import os
+import shutil
+from typing import Final
 
-src = """
-var x = True and False;
-var y = x is False;
-print(x);
-print(y);
-y = not (x is y);
-print(y);
-print(False);
-print(True);
+from mona import runtime_factory
+
+
+DEMO_SRC: Final[str] = """
+decl strlst(lst) {
+    if (lenof(lst) > 0) {
+        print(lst[0], "->");
+        strlst(lst[1:]);
+    }
+}
+strlst([1, 2, 3]);
 """
-
-# src = """
-# var x = True;
-# var y = not (x is False);
-# print(x);
-# """
+OUTPUT_DIR: Final[str] = os.path.join(os.getcwd(), "output_dir")
+STEPS: Final[int] = 12
 
 
 def main():
-    program, cmp_store = Parser.parse(src)
-    env = Environment()
+    # Initialise output directory.
+    if os.path.isdir(OUTPUT_DIR):
+        shutil.rmtree(OUTPUT_DIR)
+    os.mkdir(OUTPUT_DIR)
 
-    # Exec the whole program:
-    # env.curr_seq_id = 0
-    # env.curr_steps = -1
+    # Run program.
+    print(">>>>>> EVALUATING PROGRAM")
+    runtime_factory.run(src=DEMO_SRC, output_dir=OUTPUT_DIR)
 
-    # Example program segment execution.
-    #
-    # From line 5, not, is.
-    line_5_not_is = program.following.following.following.following.stmt.trgt.expr
-    print(line_5_not_is)
-    print(line_5_not_is.seq_id)
-    env.curr_seq_id = line_5_not_is.seq_id
-    #
-    # # For 9 stmts
-    env.curr_steps = 9
-    # #
-    # # # With this memory snapshot:
-    env.mem["x"] = True
-    env.mem["y"] = False
-    env.stack = [
-        env.mem["x"],
-        env.mem["y"],
-    ]  # Result of 'x' and 'y' in stmt '(x is y)'.
+    print("\n>>>>>> COUNTING PROGRAM EXPRESSIONS")
+    runtime_factory.run_and_count_expressions(src=DEMO_SRC, output_dir=OUTPUT_DIR)
 
-    program.eval(env)
+    print("\n>>>>>> RECORDING PROGRAM EXECUTION")
+    runtime_factory.run_and_record(src=DEMO_SRC, output_dir=OUTPUT_DIR, steps=STEPS)
+
+    replay_snapshot_filepath = os.path.join(OUTPUT_DIR, "4_snap.pickle")
+    output_replay_snapshot_filepath = os.path.join(OUTPUT_DIR, "4_out_snap.pickle")
+    print(f"\n>>>>>> REPLAYING EXECUTION SNAPSHOT '{replay_snapshot_filepath}' into '{output_replay_snapshot_filepath}'")
+    runtime_factory.replay_snapshot(src=DEMO_SRC, snapshot_filename=replay_snapshot_filepath)
 
 
 if __name__ == "__main__":
